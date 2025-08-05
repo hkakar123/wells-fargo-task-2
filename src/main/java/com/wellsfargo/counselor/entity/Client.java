@@ -1,10 +1,9 @@
 package com.yourproject.entities;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-public class Advisor {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,26 +13,33 @@ public class Advisor {
     private String email;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Client> clients;
+    @ManyToOne
+    @JoinColumn(name = "advisor_id")
+    private Advisor advisor;
 
-    public Advisor() {}
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Portfolio portfolio;
 
-    public Advisor(String name, String email, String phoneNumber, List<Client> clients) {
+    public Client() {}
+
+    public Client(String name, String email, String phoneNumber, Advisor advisor, Portfolio portfolio) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.clients = clients;
+        this.advisor = advisor;
+        this.portfolio = portfolio;
     }
 
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getEmail() { return email; }
     public String getPhoneNumber() { return phoneNumber; }
-    public List<Client> getClients() { return clients; }
+    public Advisor getAdvisor() { return advisor; }
+    public Portfolio getPortfolio() { return portfolio; }
 
     public void setName(String name) { this.name = name; }
     public void setEmail(String email) { this.email = email; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public void setClients(List<Client> clients) { this.clients = clients; }
+    public void setAdvisor(Advisor advisor) { this.advisor = advisor; }
+    public void setPortfolio(Portfolio portfolio) { this.portfolio = portfolio; }
 }
